@@ -11,7 +11,7 @@ use Magento\Framework\DB\Adapter\AdapterInterface;
  * Class InstallSchema
  * @package MGS\GeoIp\Setup
  */
-class InstallSchema extends InstallSchemaInterface
+class InstallSchema implements InstallSchemaInterface
 {
     public function install(SchemaSetupInterface $setup, ModuleContextInterface $context)
     {
@@ -20,17 +20,17 @@ class InstallSchema extends InstallSchemaInterface
         $installer->startSetup();
 
         /**
-         * Create table 'amasty_geoip_block'
+         * Create table 'mgs_geoip_ipv4'
          */
 
         $table = $installer->getConnection()
-            ->newTable($installer->getTable('mgs_geoip_blocks_ipv4'))
+            ->newTable($installer->getTable('mgs_geoip_ipv4'))
             ->addColumn(
-                'block_id',
+                'geoipv4_id',
                 Table::TYPE_INTEGER,
                 null,
                 ['identity' => true, 'unsigned' => true, 'nullable' => false, 'primary' => true],
-                'Block Id'
+                'Geoip Ipv4 Id'
             )->addColumn(
                 'start_ip_v4',
                 Table::TYPE_INTEGER,
@@ -67,35 +67,66 @@ class InstallSchema extends InstallSchemaInterface
                 null,
                 ['nullable' => true],
                 'Longitude'
+            )->setComment('MGS Geoip Block IP V4 Table');
+        $installer->getConnection()->createTable($table);
+         /**
+         * Create table 'mgs_geoip_ipv6'
+         */
+
+        $table = $installer->getConnection()
+            ->newTable($installer->getTable('mgs_geoip_ipv6'))
+            ->addColumn(
+                'geoipv4_id',
+                Table::TYPE_INTEGER,
+                null,
+                ['identity' => true, 'unsigned' => true, 'nullable' => false, 'primary' => true],
+                'Geoip Ipv6 Id'
             )->addColumn(
-                'accuracy_radius',
+                'start_ip_v6',
+                Table::TYPE_INTEGER,
+                null,
+                ['unsigned' => true, 'nullable' => false],
+                'Start Ip V6'
+            )->addColumn(
+                'end_ip_v6',
+                Table::TYPE_INTEGER,
+                null,
+                ['unsigned' => true, 'nullable' => false],
+                'End Ip V6'
+            )->addColumn(
+                'geoname_id',
+                Table::TYPE_INTEGER,
+                null,
+                ['unsigned' => true, 'nullable' => false],
+                'Geoiname Id'
+            )->addColumn(
+                'postal_code',
+                Table::TYPE_TEXT,
+                null,
+                ['nullable' => true],
+                'Postal Code'
+            )->addColumn(
+                'latitude',
                 Table::TYPE_FLOAT,
                 null,
                 ['nullable' => true],
-                'Accuracy Radius'
-            )->addIndex(
-                $installer->getIdxName('mgs_geoip_blocks_ipv4', ['start_ip_v4']),
-                ['start_ip_v4']
-            )->addIndex(
-                $setup->getIdxName(
-                    $installer->getTable('mgs_geoip_blocks_ipv4'),
-                    ['title', 'url_key', 'short_content', 'content', 'meta_keywords', 'meta_description', 'tags'],
-                    AdapterInterface::INDEX_TYPE_FULLTEXT
-                ),
-                ['title', 'url_key', 'short_content', 'content', 'meta_keywords', 'meta_description', 'tags'],
-                ['type' => AdapterInterface::INDEX_TYPE_FULLTEXT]
-            )
-
-            ->setComment('MGS Geoip Block IP V4 Table');
-
+                'Latitude'
+            )->addColumn(
+                'longitude',
+                Table::TYPE_FLOAT,
+                null,
+                ['nullable' => true],
+                'Longitude'
+            )->setComment('MGS Geoip IP V6 Table');
         $installer->getConnection()->createTable($table);
+
 
         /**
          * Create table 'amasty_geoip_location'
          */
 
         $table = $installer->getConnection()
-            ->newTable($installer->getTable('amasty_geoip_location'))
+            ->newTable($installer->getTable('mgs_geoip_location'))
             ->addColumn(
                 'location_id',
                 Table::TYPE_INTEGER,
@@ -124,8 +155,7 @@ class InstallSchema extends InstallSchemaInterface
                 ['nullable' => true],
                 'City'
             )
-            ->setComment('Amasty Geoip Location Table')
-            ->setOption('type', 'MyISAM');
+            ->setComment('MGS Geoip Location Table');
         $installer->getConnection()->createTable($table);
 
         $installer->endSetup();
