@@ -8,20 +8,28 @@
 			<label>GeoIp Data</label>
 			<tab>mgs</tab>
 			<resource>MGS_GeoIp::mgs_geoip_data</resource>
-			<group id="download_and_import" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
-				<label>Download and Import</label>
-				<field id="enable" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
-					<label>Enable GeoIp</label>
-					<source_model>Magento\Config\Model\Config\Source\Enabledisable</source_model>
+			<group id="import_data_v4" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+				<label>Import Data GeoIp V6</label>
+				<field id="data_v4" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+					<frontend_model>MGS\GeoIp\Block\Adminhtml\Config\Import</frontend_model>
+				</field>
+
+			</group>
+
+			<group id="import_data_v6" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+				<label>Import Data GeoIp V6</label>
+				<field id="data_v6" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+					<frontend_model>MGS\GeoIp\Block\Adminhtml\Config\Import</frontend_model>
 				</field>
 			</group>
-			<group id="import_data" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
-				<label>Import</label>
-				<field id="enable" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
-					<label>Enable GeoIp</label>
-					<source_model>Magento\Config\Model\Config\Source\Enabledisable</source_model>
+			<group id="import_data_location" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+				<label>Import Data GeoIp Location</label>
+				<field id="data_location" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+					<frontend_model>MGS\GeoIp\Block\Adminhtml\Config\Import</frontend_model>
 				</field>
 			</group>
+
+
 		</section>
 	</system>
 </config>
