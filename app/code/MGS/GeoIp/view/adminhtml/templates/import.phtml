@@ -10,9 +10,15 @@
  * @var \Amasty\Geoip\Block\Adminhtml\Settings\Import $this
  */
 ?>
-<button id="am-import"
-        class="action-default scalable"
-        data-ui-id="widget-button-0" type="button" title="<?= __('Import') ?>">
-    <span><?= __('Import') ?></span>
-</button>
+
+<form action="#" enctype="multipart/form-data" method="post">
+    <div>
+    <input type="file" name="file_upload" id="file_upload" multiple>
+    </div>
+    <div>
+    <button id="am-import" class="action-default scalable" data-ui-id="widget-button-0" type="button" title="<?= __('Import') ?>">
+        <span><?= __('Import') ?></span>
+    </button>
+    </div>
+</form>
 
