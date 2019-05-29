@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+        <mgs_geoip_data>
+            <module>
+                <type>1</type>
+            </module>
+            <general>
+                <enabled>1</enabled>
+                <download_path><![CDATA[https://geolite.maxmind.com/download/geoip/database/GeoLite2-City-CSV.zip]]></download_path>
+            </general>
+        </mgs_geoip_data>
+    </default>
+</config>
