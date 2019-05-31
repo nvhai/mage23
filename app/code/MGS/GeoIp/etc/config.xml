@@ -7,7 +7,7 @@
                 <type>1</type>
             </module>
             <general>
-                <enabled>1</enabled>
+                <enabled>0</enabled>
                 <download_path><![CDATA[https://geolite.maxmind.com/download/geoip/database/GeoLite2-City-CSV.zip]]></download_path>
             </general>
         </mgs_geoip_data>

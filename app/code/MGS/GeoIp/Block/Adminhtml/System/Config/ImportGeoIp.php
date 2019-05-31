@@ -8,12 +8,12 @@ use Magento\Config\Block\System\Config\Form\Field;
 use Magento\Framework\Data\Form\Element\AbstractElement;
 use MGS\GeoIp\Helper\Data as HelperData;
 
-class DownloadGeoIp extends Field
+class ImportGeoIp extends Field
 {
     /**
      * @var string
      */
-    protected $_template = 'MGS_GeoIp::system/config/download_geoip.phtml';
+    protected $_template = 'MGS_GeoIp::system/config/import_geoip.phtml';
 
     /**
      * @var HelperData
@@ -68,9 +68,12 @@ class DownloadGeoIp extends Field
      */
     public function getAjaxUrl()
     {
+        return $this->getUrl('mgs_geoip/system_config/importgeoip');
+    }
+    public function getDownloadAjaxUrl()
+    {
         return $this->getUrl('mgs_geoip/system_config/downloadgeoip');
     }
-
     /**
      * Generate collect button html
      *
@@ -81,8 +84,8 @@ class DownloadGeoIp extends Field
     {
         $button = $this->getLayout()->createBlock('Magento\Backend\Block\Widget\Button')
             ->setData([
-                'id'    => 'download_geoip',
-                'label' => __('Download GeoIp'),
+                'id'    => 'import_geoip',
+                'label' => __('Import GeoIp'),
             ]);
 
         return $button->toHtml();
