@@ -76,7 +76,7 @@ class InstallSchema implements InstallSchemaInterface
         $table = $installer->getConnection()
             ->newTable($installer->getTable('mgs_geoip_ipv6'))
             ->addColumn(
-                'geoipv4_id',
+                'geoipv6_id',
                 Table::TYPE_INTEGER,
                 null,
                 ['identity' => true, 'unsigned' => true, 'nullable' => false, 'primary' => true],
@@ -126,13 +126,13 @@ class InstallSchema implements InstallSchemaInterface
          */
 
         $table = $installer->getConnection()
-            ->newTable($installer->getTable('mgs_geoip_location'))
+            ->newTable($installer->getTable('mgs_geoip_locations'))
             ->addColumn(
-                'location_id',
+                'locations_id',
                 Table::TYPE_INTEGER,
                 null,
                 ['identity' => true, 'unsigned' => true, 'nullable' => false, 'primary' => true],
-                'Location Id'
+                'Locations Id'
             )
             ->addColumn(
                 'geoip_loc_id',

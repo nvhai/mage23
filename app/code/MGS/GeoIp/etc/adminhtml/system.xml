@@ -15,14 +15,13 @@
 					<source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
 					<comment>Please download GeoIP before enabling GeoIP</comment>
 				</field>
-				<field id="download_library" translate="label comment" type="button" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="0">
+				<!--<field id="download_library" translate="label comment" type="button" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="0">
 					<label>Enable GeoIP</label>
 					<frontend_model>MGS\GeoIp\Block\Adminhtml\System\Config\DownloadGeoIp</frontend_model>
-				</field>
+				</field>-->
 				<field id="import_library" translate="label comment" type="button" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="0">
-					<label>Import GeoIP</label>
+					<label>GeoIP Data</label>
 					<frontend_model>MGS\GeoIp\Block\Adminhtml\System\Config\ImportGeoIp</frontend_model>
-					<comment>Please download GeoIP before Import GeoIP</comment>
 				</field>
 
 			</group>

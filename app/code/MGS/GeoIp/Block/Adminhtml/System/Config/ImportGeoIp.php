@@ -85,7 +85,7 @@ class ImportGeoIp extends Field
         $button = $this->getLayout()->createBlock('Magento\Backend\Block\Widget\Button')
             ->setData([
                 'id'    => 'import_geoip',
-                'label' => __('Import GeoIp'),
+                'label' => __('Download and Import GeoIp'),
             ]);
 
         return $button->toHtml();
