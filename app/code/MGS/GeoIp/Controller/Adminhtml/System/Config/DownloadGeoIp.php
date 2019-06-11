@@ -77,8 +77,13 @@ class DownloadGeoIp extends Action
             }
 
             file_put_contents($path . '/GeoLite2-City-CSV.zip', fopen($this->_helperData->getDownloadPath(), 'r'));
-            $phar = new \PharData($path . '/GeoLite2-City-CSV.zip');
-            $phar->extractTo($path);
+
+            $phar = new \ZipArchive;
+            if ($phar->open($path . '/GeoLite2-City-CSV.zip')) {
+                $phar->extractTo($path);
+                $phar->close();
+            }
+
             $status  = true;
             $message = __("Download library success!");
         } catch (\Exception $e) {

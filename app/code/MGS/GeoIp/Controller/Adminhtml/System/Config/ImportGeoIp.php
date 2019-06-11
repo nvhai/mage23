@@ -100,7 +100,7 @@ class ImportGeoIp extends Action
             $pathFileLocation = $path . '/' . $folder[0] . '/GeoLite2-City-Locations-en.csv';
             if (file_exists($pathFileIPv4) && file_exists($pathFileIPv6) && file_exists($pathFileLocation)) {
                 $importProductRawData = $this->csvProcessor->getData($pathFileIPv6);
-                var_dump($importProductRawData);exit;
+//                var_dump($importProductRawData);exit;
 
 
                 /*$this->saveData($pathFileIPv4,'ipv4');

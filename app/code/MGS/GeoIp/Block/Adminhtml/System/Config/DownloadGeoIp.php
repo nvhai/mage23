@@ -13,7 +13,7 @@ class DownloadGeoIp extends Field
     /**
      * @var string
      */
-    protected $_template = 'MGS_GeoIp::system/config/download_geoip.phtml';
+    protected $_template = 'MGS_GeoIp::system/config/import_geoip.phtml';
 
     /**
      * @var HelperData
