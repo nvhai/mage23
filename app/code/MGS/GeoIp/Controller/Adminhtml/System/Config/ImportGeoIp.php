@@ -103,8 +103,8 @@ class ImportGeoIp extends Action
 //                var_dump($importProductRawData);exit;
 
 
-                /*$this->saveData($pathFileIPv4,'ipv4');
-                $this->saveData($pathFileIPv6,'ipv6');
+                $this->saveData($pathFileIPv4,'ipv4');
+               /* $this->saveData($pathFileIPv6,'ipv6');
                 $this->saveData($pathFileLocation,'locations');*/
                 $status  = true;
                 $message = __("Download library success!");
@@ -131,6 +131,7 @@ class ImportGeoIp extends Action
                 $connection->delete($tableName);
                 $connection->commit();
 
+
                 foreach ($importProductRawData as $rowIndex => $dataRow)
                 {
 
@@ -138,12 +139,13 @@ class ImportGeoIp extends Action
                     {
                         $model = $this->_blockIpv4Factory->create();
 
-                        $model->setData('start_ip_v4', $dataRow[1])
-                            ->setData('end_ip_v4', $dataRow[2])
-                            ->setData('geoname_id', $dataRow[0])
-                            ->setData('postal_code', $dataRow[0])
-                            ->setData('latitude', $dataRow[0])
-                            ->setData('longitude', $dataRow[0])
+                        list( $long_startIp , $long_endIp) = $this->getIpRang($dataRow[0]);
+                        $model->setData('start_ip_v4', $long_startIp)
+                            ->setData('end_ip_v4', $long_endIp)
+                            ->setData('geoname_id', $dataRow[1])
+                            ->setData('postal_code', $dataRow[6])
+                            ->setData('latitude', (float)$dataRow[7])
+                            ->setData('longitude', (float)$dataRow[8])
                             ->save();
                     }
                 }
@@ -200,5 +202,21 @@ class ImportGeoIp extends Action
             break;
         }
 
+    }
+    public function getIpRang($cidr) {
+        list($ip, $mask) = explode('/', $cidr);
+
+        $maskBinStr =str_repeat("1", $mask ) . str_repeat("0", 32-$mask );
+        $inverseMaskBinStr = str_repeat("0", $mask ) . str_repeat("1",  32-$mask );
+
+        $ipLong = ip2long( $ip );
+        $ipMaskLong = bindec( $maskBinStr );
+        $inverseIpMaskLong = bindec( $inverseMaskBinStr );
+        $netWork = $ipLong & $ipMaskLong;
+
+        $start = $netWork+1;
+
+        $end = ($netWork | $inverseIpMaskLong) -1 ;
+        return array( $start, $end );
     }
 }

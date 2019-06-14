@@ -16,7 +16,7 @@
         var buttonDownload = $('#import_geoip');
         buttonDownload.click(function () {
             var params = {};
-            new Ajax.Request('<?php echo $block->getDownloadAjaxUrl() ?>', {
+            new Ajax.Request('<?php echo $block->getAjaxUrl() ?>', {
                 parameters: params,
                 loaderArea: false,
                 asynchronous: true,
@@ -37,7 +37,7 @@
                     buttonDownload.prop("disabled", false);
                     if (response.success) {
                         $('<div class="message message-success" style="margin-bottom: 5px;color:#79a22e"><p>' + response.message + '</p></div>').insertBefore(buttonDownload);
-                        importGeoIp()
+//                        importGeoIp()
                     } else {
                         $('<div class="message message-error" style="margin-bottom: 5px;color:red"><p>' + response.message + '</p></div>').insertBefore(buttonDownload);
                     }
