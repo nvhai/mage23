@@ -57,13 +57,13 @@ class InstallSchema implements InstallSchemaInterface
                 'Postal Code'
             )->addColumn(
                 'latitude',
-                Table::TYPE_FLOAT,
+                Table::TYPE_TEXT,
                 null,
                 ['nullable' => true],
                 'Latitude'
             )->addColumn(
                 'longitude',
-                Table::TYPE_FLOAT,
+                Table::TYPE_TEXT,
                 null,
                 ['nullable' => true],
                 'Longitude'
@@ -107,13 +107,13 @@ class InstallSchema implements InstallSchemaInterface
                 'Postal Code'
             )->addColumn(
                 'latitude',
-                Table::TYPE_FLOAT,
+                Table::TYPE_TEXT,
                 null,
                 ['nullable' => true],
                 'Latitude'
             )->addColumn(
                 'longitude',
-                Table::TYPE_FLOAT,
+                Table::TYPE_TEXT,
                 null,
                 ['nullable' => true],
                 'Longitude'

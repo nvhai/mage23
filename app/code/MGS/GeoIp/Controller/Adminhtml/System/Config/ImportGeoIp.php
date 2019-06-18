@@ -89,7 +89,7 @@ class ImportGeoIp extends Action
     {
         $status = false;
         try {
-            $path = $this->_directoryList->getPath('var') . '/MGS/GeoIp';
+            $path = $this->_directoryList->getPath('pub') . '/MGS/GeoIp';
             if (!file_exists($path)) {
                 mkdir($path, 0777, true);
             }
@@ -104,8 +104,8 @@ class ImportGeoIp extends Action
 
 
                 $this->saveData($pathFileIPv4,'ipv4');
-               /* $this->saveData($pathFileIPv6,'ipv6');
-                $this->saveData($pathFileLocation,'locations');*/
+                $this->saveData($pathFileIPv6,'ipv6');
+                $this->saveData($pathFileLocation,'locations');
                 $status  = true;
                 $message = __("Download library success!");
             }
@@ -165,14 +165,18 @@ class ImportGeoIp extends Action
 
                     if($rowIndex > 0)
                     {
+
+
+                        list( $long_startIp , $long_endIp) = $this->ip2Longv6($dataRow[0]);
+
                         $model = $this->_blockIpv6Factory->create();
 
-                        $model->setData('start_ip_v6', $dataRow[1])
-                            ->setData('end_ip_v6', $dataRow[2])
-                            ->setData('geoname_id', $dataRow[0])
-                            ->setData('postal_code', $dataRow[0])
-                            ->setData('latitude', $dataRow[0])
-                            ->setData('longitude', $dataRow[0])
+                        $model->setData('start_ip_v6', $this->_helperData->getLongIpV6($long_startIp))
+                            ->setData('end_ip_v6', $this->_helperData->getLongIpV6($long_endIp))
+                            ->setData('geoname_id', $dataRow[1])
+                            ->setData('postal_code', $dataRow[6])
+                            ->setData('latitude', $dataRow[7])
+                            ->setData('longitude', $dataRow[8])
                             ->save();
                     }
                 }
@@ -191,11 +195,11 @@ class ImportGeoIp extends Action
 
                     if($rowIndex > 0)
                     {
-                        $model = $this->_city->create();
+                        $model = $this->_locationsFactory->create();
 
-                        $model->setData('country_code', $dataRow[1])
-                            ->setData('sub_city', $dataRow[2])
-                            ->setData('city', $dataRow[0])
+                        $model->setData('geoip_loc_id', $dataRow[0])
+                            ->setData('country', $dataRow[4])
+                            ->setData('city', $dataRow[10])
                             ->save();
                     }
                 }
@@ -219,4 +223,62 @@ class ImportGeoIp extends Action
         $end = ($netWork | $inverseIpMaskLong) -1 ;
         return array( $start, $end );
     }
+
+    public function ip2Longv6($data) {
+
+        // Split in address and prefix length
+        list($firstaddrstr, $prefixlen) = explode('/', $data);
+
+        // Parse the address into a binary string
+        $firstaddrbin = inet_pton($firstaddrstr);
+
+        // Convert the binary string to a string with hexadecimal characters
+        # unpack() can be replaced with bin2hex()
+        # unpack() is used for symmetry with pack() below
+        $elem = unpack('H*', $firstaddrbin);
+        $firstaddrhex = reset($elem);
+
+        // Overwriting first address string to make sure notation is optimal
+        $firstaddrstr = inet_ntop($firstaddrbin);
+
+        // Calculate the number of 'flexible' bits
+        $flexbits = 128 - $prefixlen;
+
+        // Build the hexadecimal string of the last address
+        $lastaddrhex = $firstaddrhex;
+
+        // We start at the end of the string (which is always 32 characters long)
+        $pos = 31;
+        while ($flexbits > 0) {
+            // Get the character at this position
+            $orig = substr($lastaddrhex, $pos, 1);
+
+            // Convert it to an integer
+            $origval = hexdec($orig);
+
+            // OR it with (2^flexbits)-1, with flexbits limited to 4 at a time
+            $newval = $origval | (pow(2, min(4, $flexbits)) - 1);
+
+            // Convert it back to a hexadecimal character
+            $new = dechex($newval);
+
+            // And put that character back in the string
+            $lastaddrhex = substr_replace($lastaddrhex, $new, $pos, 1);
+
+            // We processed one nibble, move to previous position
+            $flexbits -= 4;
+            $pos -= 1;
+        }
+
+        // Convert the hexadecimal string to a binary string
+        # Using pack() here
+        # Newer PHP version can use hex2bin()
+        $lastaddrbin = pack('H*', $lastaddrhex);
+
+        // And create an IPv6 address from the binary string
+        $lastaddrstr = inet_ntop($lastaddrbin);
+        return array($firstaddrstr,$lastaddrstr);
+    }
+
+
 }
